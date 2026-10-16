@@ -1,0 +1,27 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1424"><title>Guida · TradeNote</title><link rel="stylesheet" href="./styles.css"><style>main{max-width:800px;margin:auto;padding:35px 20px}h2{margin:30px 0 10px;font-size:20px}p,li{font-size:14px;color:#b5c5d9}li{margin:9px 0}strong{color:#eff4fc}code{color:#49e0ba}</style></head><body><main>
+<a href="./">← Torna all’app</a><p class="eyebrow" style="margin-top:24px!important">GUIDA RAPIDA</p><h1>Dall’alert al Diario.</h1>
+<ol><li>Copia l’alert Telegram completo, incollalo e premi <strong>Leggi alert</strong>.</li><li>Controlla squadre e lega; scegli il <strong>mercato / selezione</strong> su cui hai operato.</li><li>Inserisci <strong>quote e minuti eseguiti</strong>, importo e <strong>Win, Lose o Freebet</strong>. I campi numerici propongono valori comuni e consentono valori personalizzati. Sono ammessi punto e virgola decimale.</li><li>Controlla il risultato e premi <strong>Copia riga Diario</strong>.</li><li>Nel log, foglio <strong>Diario</strong>, incolla nella <strong>cella A della prima riga libera</strong>, dalla riga 8. Seleziona la cella nella griglia senza entrare nell’editor del testo.</li></ol>
+<p><a href="./Trading_Sportivo_Pro_Santo_Cecala.xlsx" download>Scarica il log Excel compatibile ↓</a></p>
+<p>La riga occupa 22 colonne, <strong>A:V</strong>. Dalla W iniziano le formule. Usa l’area geografica Italia per riconoscere date, virgole decimali e percentuali. Il trasferimento si completa quando incolli nel foglio.</p>
+<h2>Segnale e trade</h2>
+<p>Sono riconosciuti Moneybag / InPlayFlux e Next goal. Minuto e quote del messaggio sono dati del segnale: potrebbero riferirsi a un mercato diverso dal tuo trade. Le quote effettivamente abbinate si inseriscono nella scheda.</p>
+<p>Gli alert di esempio non hanno una data. Nei dettagli vengono proposte data e ora attuali: correggile per i trade passati. Per i recuperi usa il minuto totale, per esempio 45+2 = 47.</p>
+<h2>Stake, responsabilità e Split</h2>
+<p>Con Back l’importo è lo stake. Con Lay scegli tra stake e responsabilità: l’app ricava l’altro importo. <strong>Più ingressi / Split</strong> consente fino a 12 ingressi reali con quota, stake e minuto. La quota media è ponderata per gli stake.</p>
+<p>Lo stake di uscita è calcolato per una copertura completa. Se quello effettivo è diverso, inseriscilo nei dettagli. Se i due payoff non coincidono entro 0,02 €, correggi gli importi oppure indica il risultato effettivo del rendiconto.</p>
+<h2>Freebet</h2>
+<p>Una Freebet deve avere payoff non negativi in entrambi i casi. Quando è <strong>ancora aperta</strong> il rischio residuo è zero e il profitto possibile viene mostrato separatamente. Nel Diario lo stato è Aperto e il risultato economico resta vuoto. Il rischio massimo storico resta registrato.</p>
+<p>Le note iniziano con <code>FREEBET:</code>: il log incluso usa questo indicatore per il rischio residuo zero.</p>
+<p>Quando viene <strong>regolata</strong>, riaprila nello Storico, scegli se la selezione ha vinto o perso e aggiorna la data di chiusura. Ricopia e <strong>sostituisci la riga con lo stesso ID</strong>. Un risultato netto zero entra nelle statistiche come Flat.</p>
+<p>Le altre uscite parziali con rischio residuo vanno dettagliate nel foglio Esecuzioni.</p>
+<h2>Commissioni e risultato effettivo</h2>
+<p>La percentuale si modifica in Impostazioni o nella scheda. La commissione effettiva sostituisce la stima. Con “Netto effettivo” indica anche la commissione, eventualmente zero: il netto non viene ridotto di nuovo. Per mercati asiatici o regolamenti particolari usa il risultato effettivo.</p>
+<h2>Aggiornare la stessa campagna</h2>
+<p>Usa una campagna per partita, data, mercato e conto. Il controllo duplicati confronta le schede presenti in questo browser. Dopo una correzione conserva l’ID e sostituisci la riga già presente nel Diario.</p>
+<p>“Copia esecuzioni” è facoltativo: incolla in <strong>Esecuzioni, colonna A</strong> della prima riga libera, dalla riga 8. Il Diario esportato resta in modalità manuale e usa già il risultato aggregato.</p>
+<p>Il testo originale viene conservato nello storico e nelle note del Diario. Il log accetta nuove leghe e analizza le prime 30 distinte; i totali includono tutte. Next Goal è già tra le strategie.</p>
+<h2>Installazione e backup</h2>
+<p>Pubblica i file su GitHub Pages seguendo README.md. Da Chrome Android apri il link HTTPS e scegli <strong>Installa app</strong> oppure <strong>⋮ → Aggiungi a schermata Home</strong>. Su iPhone: Safari → Condividi → Aggiungi a Home. Dopo il primo caricamento completo può lavorare offline.</p>
+<p>Storico e bozze restano nel browser. Prima di cambiare telefono o cancellarne i dati usa <strong>Backup JSON</strong>. Il ripristino unisce le schede per ID conservando quelle più recenti, senza sostituire la bozza corrente. Il TSV esporta le sole schede complete. Lo storico e il log gestiscono 500 campagne predisposte.</p>
+<p>Se la copia viene bloccata, espandi “Riga da copiare” e copia manualmente il testo. Dopo la pubblicazione verifica il primo incolla dal tuo telefono.</p>
+<p><a href="./">Apri TradeNote →</a></p></main></body></html>

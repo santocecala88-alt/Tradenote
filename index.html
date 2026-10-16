@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1424">
+  <meta name="description" content="Dall’alert Telegram al tuo diario di trading sportivo.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>TradeNote · Alert to Log</title>
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="TradeNote, pagina iniziale"><span class="brand-mark">TN</span><span>TradeNote<small>IL TUO DIARIO, SENZA RICOPIARE</small></span></a>
+  <button id="installBtn" class="button ghost small" type="button">Installa app <span aria-hidden="true">↗</span></button>
+</header>
+<div class="shell">
+  <nav class="tabs" aria-label="Sezioni">
+    <button type="button" class="tab active" data-view="trade" aria-current="page">01 <span>Nuovo trade</span></button>
+    <button type="button" class="tab" data-view="history">02 <span>Storico</span><span id="historyCount" class="counter">0</span></button>
+    <button type="button" class="tab" data-view="settings">03 <span>Impostazioni</span></button>
+  </nav>
+  <main>
+    <section id="view-trade">
+      <div class="page-heading"><div><p class="eyebrow">TELEGRAM → DIARIO</p><h1>Un alert. Una riga pronta.</h1><p>Incolla il segnale, aggiungi i dati del trade e copia nel tuo log.</p></div><button id="newBtn" class="button ghost" type="button">＋ Nuovo</button></div>
+      <div class="workspace">
+        <div class="left-stack">
+          <section class="card alert-card" aria-labelledby="alertTitle">
+            <div class="card-heading"><h2 id="alertTitle"><span class="step">1</span> Incolla l’alert</h2><span class="pill">2 formati</span></div>
+            <label for="alertText" class="sr-only">Testo completo dell’alert Telegram</label>
+            <textarea id="alertText" rows="9" placeholder="Copia il messaggio da Telegram e incollalo qui…" maxlength="24000" spellcheck="false"></textarea>
+            <div class="action-line"><button id="parseBtn" type="button" class="button primary">Leggi alert <span aria-hidden="true">→</span></button><button id="manualBtn" type="button" class="text-button">Inserisci a mano</button></div>
+            <div class="samples"><span>Prova un esempio</span><button id="sampleMoneybag" type="button">Moneybag</button><button id="sampleNext" type="button">Next goal</button></div>
+          </section>
+          <section id="signalCard" class="card signal-card" hidden aria-labelledby="signalTitle">
+            <div class="card-heading"><h2 id="signalTitle">Segnale riconosciuto</h2><span id="sourceBadge" class="pill gold"></span></div>
+            <p id="signalEvent" class="fixture"></p><p id="signalLeague" class="muted"></p>
+            <div class="signal-numbers"><div><span>Minuto alert</span><strong id="signalMinute">—</strong></div><div><span>Risultato alert</span><strong id="signalScore">—</strong></div><div><span>SR del canale</span><strong id="signalRate">—</strong></div></div>
+            <div id="parseWarnings" class="notice amber" hidden></div>
+            <details><summary>Statistiche e quote del segnale</summary><div id="signalDetails" class="stats-list"></div><p class="hint">Sono dati del messaggio. Le quote realmente eseguite si inseriscono nella scheda trade.</p></details>
+          </section>
+          <section class="card quiet-card">
+            <span class="eyebrow">COME FINISCE NEL FOGLIO</span>
+            <p>Usa <strong>Copia riga Diario</strong>, apri <strong>Diario</strong> e incolla nella colonna <strong>A</strong> della prima riga libera, dalla riga 8.</p>
+            <a href="./Guida.html">Guida rapida ↗</a> <a href="./Trading_Sportivo_Pro_Santo_Cecala.xlsx" download>Scarica il log compatibile ↓</a>
+          </section>
+        </div>
+        <section class="card trade-card" aria-labelledby="tradeTitle">
+          <div class="card-heading"><h2 id="tradeTitle"><span class="step">2</span> Il trade eseguito</h2><span id="draftBadge" class="pill">Bozza locale</span></div>
+          <form id="tradeForm" novalidate>
+            <div class="form-grid">
+              <label>Squadra casa<input name="home" id="home" autocomplete="off" placeholder="Dal segnale"></label>
+              <label>Squadra ospite<input name="away" id="away" autocomplete="off" placeholder="Dal segnale"></label>
+              <label class="full">Lega / competizione<input name="league" id="league" autocomplete="off" placeholder="Dal segnale"></label>
+              <label>Strategia<select name="strategy" id="strategy"></select></label>
+              <label>Mercato / selezione<select name="market" id="market"></select></label>
+              <label>Operazione iniziale<select name="side" id="side"><option>Back</option><option>Lay</option></select></label>
+              <label>Esito<select name="outcome" id="outcome"><option>Win</option><option>Lose</option><option>Freebet</option><option>Pareggio</option><option>Aperto</option></select></label>
+            </div>
+            <div id="freebetBox" class="notice" hidden><label>La Freebet è…<select name="settlement" id="settlement"><option value="pending">Ancora aperta, da regolare</option><option value="wins">Regolata: la selezione vince</option><option value="loses">Regolata: la selezione perde</option></select></label><p class="hint">Una Freebet aperta ha rischio residuo zero; il possibile profitto entra nel log solo dopo il regolamento.</p></div>
+            <div class="section-line"><h3>Ingresso</h3><label class="switch"><input type="checkbox" name="multi" id="multi"> Più ingressi / Split</label></div>
+            <div id="singleEntry" class="form-grid">
+              <label>Quota ingresso<input name="entryOdds" id="entryOdds" inputmode="decimal" list="oddsList" placeholder="Es. 2,50"></label>
+              <label>Minuto ingresso<select name="entryMinute" id="entryMinute" class="minute-select"></select></label>
+              <label><span id="amountLabel">Stake ingresso €</span><input name="amount" id="amount" inputmode="decimal" list="amountList"></label>
+              <label>Importo inserito<select name="basis" id="basis"><option value="stake">Stake</option><option value="liability">Responsabilità (Lay)</option></select></label>
+            </div>
+            <div id="multiEntry" hidden><p class="hint">Ogni importo è lo stake effettivamente abbinato. La quota media viene calcolata.</p><div id="entryRows"></div><button id="addEntry" type="button" class="text-button">＋ Aggiungi ingresso</button></div>
+            <div id="exitSection">
+              <div class="section-line"><h3>Uscita</h3><span class="hint">Operazione opposta, stesso mercato</span></div>
+              <div class="form-grid"><label>Quota uscita<input name="exitOdds" id="exitOdds" inputmode="decimal" list="oddsList" placeholder="Es. 1,50"></label><label>Minuto uscita<select name="exitMinute" id="exitMinute" class="minute-select"></select></label></div>
+            </div>
+            <details id="advanced" class="advanced"><summary>Dettagli, date e risultato effettivo</summary>
+              <div class="form-grid">
+                <label>Conto / exchange<input id="account" name="account" autocomplete="off"></label>
+                <label>Commissione %<input id="commissionRate" name="commissionRate" inputmode="decimal" placeholder="4,5"></label>
+                <label>Data/ora ingresso<input id="openedAt" name="openedAt" type="datetime-local"></label>
+                <label>Data/ora chiusura / copertura<input id="closedAt" name="closedAt" type="datetime-local"></label>
+                <label>Risultato all’ingresso<input id="score" name="score" placeholder="0 - 0"></label>
+                <label>Motivo uscita<select id="exitReason" name="exitReason"><option>Manuale</option><option>Gol</option><option>Stop 76</option><option>Stop-loss</option><option>Take-profit</option><option>Fine mercato</option><option>Altro</option></select></label>
+                <label class="full">Come registrare il risultato<select id="resultMode" name="resultMode"><option value="prices">Calcola da quote e importi</option><option value="gross">Inserisco il lordo effettivo</option><option value="net">Inserisco il netto effettivo</option></select></label>
+                <label id="actualResultLabel" hidden>Risultato effettivo €<input id="actualResult" name="actualResult" inputmode="decimal" placeholder="Con segno, es. -24"></label>
+                <label>Commissione effettiva € (opzionale)<input id="actualCommission" name="actualCommission" inputmode="decimal" placeholder="Vuoto = calcolo %"></label>
+                <label>Stake uscita effettivo € (opzionale)<input id="exitStake" name="exitStake" inputmode="decimal" list="amountList" placeholder="Vuoto = copertura automatica"></label>
+                <label>Piano rispettato<select id="plan" name="plan"><option>Da valutare</option><option>Sì</option><option>No</option></select></label>
+                <label class="full">Note<input id="notes" name="notes" maxlength="1600" placeholder="Errori, contesto, gestione del trade…"></label>
+                <label class="full">Link screenshot<input id="screenshot" name="screenshot" type="url" placeholder="https://…"></label>
+              </div>
+              <p class="hint">Gli alert di esempio non contengono la data: viene proposta quella attuale. Per trade passati correggila. Per mercati asiatici usa il P/L effettivo.</p>
+            </details>
+          </form>
+          <div id="resultPanel" class="result-panel" aria-live="polite">
+            <div class="result-primary"><span id="resultLabel">P/L netto</span><strong id="netValue">—</strong><small id="resultCaption">Completa i dati eseguiti</small></div>
+            <div class="result-grid"><div><span>Lordo</span><strong id="grossValue">—</strong></div><div><span>Commissione</span><strong id="feeValue">—</strong></div><div><span>Rischio massimo</span><strong id="riskValue">—</strong></div><div><span>Rischio residuo</span><strong id="residualValue">—</strong></div></div>
+            <p id="calcDetail" class="hint"></p>
+          </div>
+          <div id="validation" class="notice amber" hidden role="status"></div>
+          <div id="duplicateBox" class="notice amber" hidden><p id="duplicateText"></p><button id="loadDuplicate" type="button" class="text-button">Apri il trade già salvato</button></div>
+          <div class="copy-actions"><button id="copyBtn" type="button" class="button primary wide">Copia riga Diario <span aria-hidden="true">↗</span></button><button id="saveBtn" type="button" class="button ghost">Salva bozza nello storico</button></div>
+          <p id="pasteHint" class="hint center">22 colonne · incolla in A della prima riga libera · formule del log preservate</p>
+          <details class="export-details"><summary>Riga da copiare e dettaglio esecuzioni</summary><p class="hint">Puoi selezionare la riga qui sotto se il browser non consente la copia.</p><textarea id="exportText" readonly rows="3" aria-label="Riga Diario con colonne separate da tabulazioni" spellcheck="false"></textarea><button id="copyExecutions" type="button" class="text-button">Copia esecuzioni (facoltativo)</button><p class="hint">Incolla in Esecuzioni, colonna A della prima riga libera. La riga Diario resta in modalità manuale: le esecuzioni sono un dettaglio di controllo.</p></details>
+        </section>
+      </div>
+    </section>
+    <section id="view-history" hidden>
+      <div class="page-heading"><div><p class="eyebrow">SALVATO SU QUESTO DISPOSITIVO</p><h1>Il tuo storico.</h1><p>Riapri un trade per correggerlo o regolare una Freebet.</p></div><button id="backupBtn" type="button" class="button ghost">Backup JSON ↓</button></div>
+      <div id="historySummary" class="history-summary"></div><div id="historyList"></div>
+      <div class="card quiet-card"><p>Lo storico resta nel browser di questo dispositivo. Il pulsante copia prepara i dati: non verifica l’incolla nel foglio.</p><button id="exportHistory" class="text-button" type="button">Scarica tutte le righe Diario (.tsv)</button><label class="text-button file-label">Ripristina backup JSON<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div>
+    </section>
+    <section id="view-settings" hidden>
+      <div class="page-heading"><div><p class="eyebrow">LE TUE PREFERENZE</p><h1>Pronta per il prossimo trade.</h1><p>Valori proposti per le nuove schede, sempre modificabili.</p></div></div>
+      <form id="settingsForm" class="card settings-card"><div class="form-grid"><label>Conto / exchange predefinito<input id="defaultAccount" value="Betfair"></label><label>Commissione standard %<input id="defaultCommission" inputmode="decimal" value="4,5"></label><label>Stake iniziale €<input id="defaultAmount" inputmode="decimal" value="40" list="amountList"></label></div><button class="button primary" type="submit">Salva preferenze</button><p class="hint">La commissione proposta è un’impostazione modificabile. Per un risultato definitivo puoi inserire quella addebitata dall’exchange.</p></form>
+      <div class="card quiet-card"><h2>I tuoi dati</h2><p>Il testo dell’alert, le bozze e lo storico restano in questo browser. Non servono accessi Telegram o chiavi API. Fai un backup prima di cancellare i dati del browser o cambiare telefono.</p><p>L’app funziona offline dopo il primo caricamento completo. Per gli aggiornamenti serve una connessione.</p><a href="./Guida.html">Apri la guida completa ↗</a><p class="hint">TradeNote 1.0 · Formati Moneybag e Next goal</p></div>
+    </section>
+  </main>
+  <footer><span class="footer-dot"></span> Locale sul tuo dispositivo <span class="footer-right">TradeNote / Santo</span></footer>
+</div>
+<datalist id="oddsList"></datalist><datalist id="amountList"></datalist>
+<div id="toast" class="toast" role="status" hidden></div>
+<dialog id="installHelp"><h2>TradeNote sul telefono</h2><p>Apri il link pubblicato in Chrome su Android. Nel menu ⋮ scegli <strong>Installa app</strong> oppure <strong>Aggiungi a schermata Home</strong>.</p><p>Su iPhone: Safari → Condividi → Aggiungi a Home. L’installazione richiede il sito HTTPS pubblicato.</p><form method="dialog"><button class="button primary">Ho capito</button></form></dialog>
+<noscript><p class="notice">Attiva JavaScript per leggere gli alert e preparare la riga del log.</p></noscript>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
